@@ -89,12 +89,4 @@ function deleteNews(id) {
     if(confirm("¿Eliminar publicación?")) {
         document.getElementById(`post-${id}`).remove();
     }
-}const firebaseConfig = {
-  apiKey: "AIzaSyB8gBQ7-AEX6eyDN1Rrp2YTKx48C8-jLnI",
-  authDomain: "infoculmey.firebaseapp.com",
-  projectId: "infoculmey",
-  storageBucket: "infoculmey.firebasestorage.app",
-  messagingSenderId: "875533730176",
-  appId: "1:875533730176:web:dc5baf0a2bc802244b8165",
-  measurementId: "G-RWH4G1C0TT"
-};
+}
