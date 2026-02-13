@@ -1,0 +1,45 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Se ejecuta cuando haces un push a la rama "main"
+  push:
+    branches: ["main"]
+
+  # NUEVO: Se ejecuta automáticamente cada día a las 00:00 UTC
+  # Esto sirve para "renovar" el sitio si consume datos de APIs externas
+  schedule:
+    - cron: '0 0 * * *'
+
+  # Permite ejecutar el flujo manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+# Configuración de permisos para GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Sube todo el contenido del repositorio
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
