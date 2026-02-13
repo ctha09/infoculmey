@@ -6,7 +6,8 @@ let currentBalance = 0;
 // ==========================================
 const datosInicialesTesoreria = [
     { desc: "Venta de bonos", amount: 20000 },
-    // Puedes agregar más líneas aquí siguiendo el mismo formato
+    { desc: "Fondo 2025", amount: 75000 }
+    // Para agregar más: { desc: "Nombre", amount: valor },
 ];
 
 const datosInicialesPrensa = [
@@ -23,10 +24,11 @@ function cargarDatosPermanentes() {
     const historyBody = document.getElementById('history-body');
     const newsContainer = document.getElementById('news-container');
     
-    // Limpiar contenedores por si acaso
+    // Resetear balance e interfaz antes de cargar
+    currentBalance = 0;
     historyBody.innerHTML = "";
     
-    // Cargar Tesorería desde el código
+    // Cargar Tesorería desde los datos fijos
     datosInicialesTesoreria.forEach(item => {
         currentBalance += item.amount;
         const row = `<tr>
@@ -40,7 +42,7 @@ function cargarDatosPermanentes() {
     
     actualizarDisplayDinero();
 
-    // Cargar Prensa desde el código
+    // Cargar Prensa desde los datos fijos
     if(datosInicialesPrensa.length > 0) {
         newsContainer.innerHTML = "";
         datosInicialesPrensa.forEach(noticia => {
@@ -60,7 +62,7 @@ function actualizarDisplayDinero() {
     document.getElementById('money-display').innerText = `$${currentBalance.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
 }
 
-// --- Funciones de Interfaz ---
+// --- Funciones de Navegación e Interfaz ---
 
 function toggleAdmin() {
     if (!isAdmin) {
@@ -105,7 +107,7 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-// --- Funciones para agregar datos en vivo (Temporales hasta recargar) ---
+// --- Funciones para agregar datos temporales (Sesión actual) ---
 
 function addTransaction() {
     const desc = document.getElementById('trans-desc').value;
