@@ -18,8 +18,8 @@ body { background-color: var(--dark); color: white; min-height: 100vh; overflow-
 header {
     height: 120px;
     display: flex;
-    justify-content: center; /* Centro horizontal del título */
-    align-items: center;     /* Centro vertical del título */
+    justify-content: center;
+    align-items: center;
     position: relative;
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(15px);
@@ -33,6 +33,7 @@ header {
     letter-spacing: 5px;
     cursor: pointer;
     text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    text-align: center;
 }
 
 .credits-left, .credits-right {
@@ -69,24 +70,36 @@ header {
 
 #admin-btn:hover { background: var(--primary); }
 
-/* CONTENEDORES Y TARJETAS */
+/* CONTENEDORES Y TARJETAS FLEXIBLES */
 .container {
-    display: flex; gap: 40px; padding: 100px 5%;
-    justify-content: center; align-items: center;
+    display: flex; 
+    flex-wrap: wrap; /* Importante para móviles */
+    gap: 20px; 
+    padding: 100px 5%;
+    justify-content: center; 
+    align-items: center;
 }
 
 .card-option {
-    flex: 1; max-width: 450px; height: 350px;
-    background: var(--glass); border: 1px solid var(--border);
-    border-radius: 30px; display: flex; align-items: center;
-    justify-content: center; text-align: center; cursor: pointer;
+    flex: 1; 
+    min-width: 280px; /* Ancho mínimo para celus */
+    max-width: 450px; 
+    height: 350px;
+    background: var(--glass); 
+    border: 1px solid var(--border);
+    border-radius: 30px; 
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    text-align: center; 
+    cursor: pointer;
     transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card-option:hover { transform: scale(1.05); border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
 
-/* VISTAS DETALLADAS */
-.detail-view { padding: 50px; display: flex; justify-content: center; }
+/* VISTAS DETALLADAS AJUSTABLES */
+.detail-view { padding: 50px 5%; display: flex; justify-content: center; }
 .glass-panel { background: var(--glass); width: 100%; max-width: 900px; padding: 40px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(20px); }
 
 .balance-display { text-align: center; padding: 40px; background: rgba(0,0,0,0.4); border-radius: 20px; margin-bottom: 30px; border: 1px solid var(--border); }
@@ -104,3 +117,53 @@ th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border)
 
 .news-item { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid var(--primary); position: relative; }
 .del-news { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; }
+
+/* ==========================================
+   NUEVOS AJUSTES PARA MÓVILES (Media Queries)
+   ========================================== */
+@media (max-width: 768px) {
+    header {
+        height: auto;
+        flex-direction: column;
+        padding: 30px 5%;
+    }
+
+    .main-title {
+        font-size: 2rem;
+        letter-spacing: 2px;
+        margin: 20px 0;
+    }
+
+    .credits-left, .credits-right {
+        position: static;
+        font-size: 0.6rem;
+        text-align: center;
+    }
+
+    .admin-access {
+        position: static;
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .container {
+        padding: 50px 5%;
+    }
+
+    .card-option {
+        height: 250px; /* Un poco más bajas en celu */
+    }
+
+    #money-display {
+        font-size: 2.5rem; /* El saldo se ajusta al ancho del celu */
+    }
+
+    .glass-panel {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .detail-view {
+        padding: 20px 5%;
+    }
+}
