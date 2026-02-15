@@ -3,10 +3,22 @@
     --dark: #0a0f1d;
     --glass: rgba(255, 255, 255, 0.05);
     --border: rgba(255, 255, 255, 0.1);
+    --insta: #e1306c; /* Color acento para Instagram */
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-body { background-color: var(--dark); color: white; min-height: 100vh; overflow-x: hidden; }
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+}
+
+body { 
+    background-color: var(--dark); 
+    color: white; 
+    min-height: 100vh; 
+    overflow-x: hidden; 
+}
 
 .bg-gradient {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -73,7 +85,7 @@ header {
 /* CONTENEDORES Y TARJETAS FLEXIBLES */
 .container {
     display: flex; 
-    flex-wrap: wrap; /* Importante para móviles */
+    flex-wrap: wrap; 
     gap: 20px; 
     padding: 100px 5%;
     justify-content: center; 
@@ -82,7 +94,7 @@ header {
 
 .card-option {
     flex: 1; 
-    min-width: 280px; /* Ancho mínimo para celus */
+    min-width: 280px; 
     max-width: 450px; 
     height: 350px;
     background: var(--glass); 
@@ -93,34 +105,123 @@ header {
     justify-content: center; 
     text-align: center; 
     cursor: pointer;
+    text-decoration: none; /* Para que el link no subraye el texto */
+    color: inherit;
     transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card-option:hover { transform: scale(1.05); border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+.card-option:hover { 
+    transform: scale(1.05); 
+    border-color: var(--primary); 
+    background: rgba(59, 130, 246, 0.1); 
+}
+
+/* ESTILO ESPECÍFICO PARA LA TARJETA DE INSTAGRAM */
+.card-instagram:hover {
+    border-color: var(--insta);
+    background: rgba(225, 48, 108, 0.1) !important;
+    box-shadow: 0 0 25px rgba(225, 48, 108, 0.15);
+}
+
+.card-instagram h2 {
+    color: white;
+    transition: 0.3s;
+}
+
+.card-instagram:hover h2 {
+    color: var(--insta);
+}
 
 /* VISTAS DETALLADAS AJUSTABLES */
 .detail-view { padding: 50px 5%; display: flex; justify-content: center; }
-.glass-panel { background: var(--glass); width: 100%; max-width: 900px; padding: 40px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(20px); }
+.glass-panel { 
+    background: var(--glass); 
+    width: 100%; 
+    max-width: 900px; 
+    padding: 40px; 
+    border-radius: 30px; 
+    border: 1px solid var(--border); 
+    backdrop-filter: blur(20px); 
+}
 
-.balance-display { text-align: center; padding: 40px; background: rgba(0,0,0,0.4); border-radius: 20px; margin-bottom: 30px; border: 1px solid var(--border); }
+.balance-display { 
+    text-align: center; 
+    padding: 40px; 
+    background: rgba(0,0,0,0.4); 
+    border-radius: 20px; 
+    margin-bottom: 30px; 
+    border: 1px solid var(--border); 
+}
+
 #money-display { font-size: 4rem; color: #4ade80; font-weight: 800; }
 
-.admin-box { background: rgba(255, 193, 7, 0.05); border: 1px solid #ffc107; padding: 25px; border-radius: 15px; margin-bottom: 30px; }
+.admin-box { 
+    background: rgba(255, 193, 7, 0.05); 
+    border: 1px solid #ffc107; 
+    padding: 25px; 
+    border-radius: 15px; 
+    margin-bottom: 30px; 
+}
+
 .admin-only { display: none; }
 
-input, textarea { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 12px; width: 100%; margin-bottom: 12px; border-radius: 8px; font-size: 1rem; }
-.btn-save { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1rem; }
+input, textarea { 
+    background: rgba(0,0,0,0.5); 
+    border: 1px solid var(--border); 
+    color: white; 
+    padding: 12px; 
+    width: 100%; 
+    margin-bottom: 12px; 
+    border-radius: 8px; 
+    font-size: 1rem; 
+}
+
+.btn-save { 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    padding: 15px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    width: 100%; 
+    font-weight: bold; 
+    font-size: 1rem; 
+}
 
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border); }
-.back-link { background: none; border: none; color: #64748b; cursor: pointer; margin-bottom: 20px; font-weight: bold; }
+.back-link { 
+    background: none; 
+    border: none; 
+    color: #64748b; 
+    cursor: pointer; 
+    margin-bottom: 20px; 
+    font-weight: bold; 
+}
 
-.news-item { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid var(--primary); position: relative; }
-.del-news { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; }
+.news-item { 
+    background: rgba(255,255,255,0.03); 
+    padding: 20px; 
+    border-radius: 15px; 
+    margin-bottom: 20px; 
+    border-left: 5px solid var(--primary); 
+    position: relative; 
+}
 
-/* ==========================================
-   NUEVOS AJUSTES PARA MÓVILES (Media Queries)
-   ========================================== */
+.del-news { 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    background: #ef4444; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 0.7rem; 
+}
+
+/* MEDIA QUERIES PARA MÓVILES */
 @media (max-width: 768px) {
     header {
         height: auto;
@@ -151,11 +252,11 @@ th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border)
     }
 
     .card-option {
-        height: 250px; /* Un poco más bajas en celu */
+        height: 250px; 
     }
 
     #money-display {
-        font-size: 2.5rem; /* El saldo se ajusta al ancho del celu */
+        font-size: 2.5rem;
     }
 
     .glass-panel {
