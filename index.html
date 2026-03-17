@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFOCULMEY | Promo 2026</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -62,9 +63,14 @@
             <button class="back-link" onclick="showHome()">← Volver</button>
             <h2>Tesorería</h2>
             <div class="balance-display">
-                <small>BALANCE NETO</small>
+                <small>BALANCE ACTUAL</small>
                 <p id="money-display">$0,00</p>
             </div>
+
+            <div class="chart-container">
+                <canvas id="finance-chart"></canvas>
+            </div>
+
             <div class="admin-only admin-box">
                 <input type="text" id="trans-desc" placeholder="Descripción">
                 <input type="number" id="trans-amount" placeholder="Monto">
