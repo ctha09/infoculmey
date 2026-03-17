@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infoculmey | Gestión Profesional</title>
+    <title>INFOCULMEY | Promo 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div id="loader">
         <div class="loader-content">
             <h1 class="loader-title">INFOCULMEY</h1>
@@ -21,9 +22,9 @@
     <div class="bg-gradient"></div>
 
     <header>
-        <div class="credits-left">Programada por: Carlos Th. Acosta</div>
+        <div class="credits-left">Programada por: <br> Carlos Th. Acosta</div>
         <h1 class="main-title" onclick="showHome()">INFOCULMEY</h1>
-        <div class="credits-right">Idea por Rodolfo G. Horrisberger</div>
+        <div class="credits-right">Idea por: <br> Rodolfo G. Horrisberger</div>
         <div class="admin-access">
             <span id="status-mode">Modo Lectura</span>
             <button id="admin-btn" onclick="toggleAdmin()">🔑 Acceso</button>
@@ -35,7 +36,7 @@
             <div class="card-content">
                 <h2>TESORERÍA</h2>
                 <p>Balances y movimientos financieros.</p>
-                <span class="btn-enter">Ingresar →</span>
+                <span>Ingresar →</span>
             </div>
         </div>
 
@@ -43,34 +44,31 @@
             <div class="card-content">
                 <h2>PRENSA</h2>
                 <p>Boletín informativo oficial.</p>
-                <span class="btn-enter">Leer más →</span>
+                <span>Leer más →</span>
             </div>
         </div>
 
-        <a href="https://www.instagram.com/alumnadoicc?igsh=c2xhZHJ4dGd0MmFm" target="_blank" rel="noopener noreferrer" class="card-option card-instagram">
+        <a href="https://www.instagram.com/alumnadoicc" target="_blank" class="card-option card-instagram">
             <div class="card-content">
                 <h2>ALUMNADO ICC</h2>
                 <p>Nuestra comunidad en Instagram.</p>
-                <span class="btn-enter">Ver perfil →</span>
+                <span>Ver perfil →</span>
             </div>
         </a>
     </main>
 
     <section id="view-tesoreria" class="detail-view" style="display:none">
         <div class="glass-panel">
-            <button class="back-link" onclick="showHome()">← Volver al Menú</button>
-            <h2 class="section-title">Tesorería</h2>
+            <button class="back-link" onclick="showHome()">← Volver</button>
+            <h2>Tesorería</h2>
             <div class="balance-display">
                 <small>BALANCE NETO</small>
                 <p id="money-display">$0,00</p>
             </div>
             <div class="admin-only admin-box">
-                <h3>Cargar Movimiento</h3>
-                <div class="form-group">
-                    <input type="text" id="trans-desc" placeholder="Descripción">
-                    <input type="number" id="trans-amount" placeholder="Monto (ej: -500)">
-                    <button class="btn-save" onclick="addTransaction()">Guardar</button>
-                </div>
+                <input type="text" id="trans-desc" placeholder="Descripción">
+                <input type="number" id="trans-amount" placeholder="Monto">
+                <button class="btn-save" onclick="addTransaction()">Guardar</button>
             </div>
             <table>
                 <thead><tr><th>Concepto</th><th>Importe</th></tr></thead>
@@ -81,14 +79,13 @@
 
     <section id="view-prensa" class="detail-view" style="display:none">
         <div class="glass-panel">
-            <button class="back-link" onclick="showHome()">← Volver al Menú</button>
-            <h2 class="section-title">Prensa</h2>
+            <button class="back-link" onclick="showHome()">← Volver</button>
+            <h2>Prensa</h2>
             <div class="admin-only admin-box">
-                <h3>Nueva Publicación</h3>
-                <textarea id="news-input" placeholder="Escriba aquí el comunicado..."></textarea>
+                <textarea id="news-input" placeholder="Escriba aquí..."></textarea>
                 <button class="btn-save" onclick="addNews()">Publicar</button>
             </div>
-            <div id="news-container"><p class="empty-news">Sin novedades.</p></div>
+            <div id="news-container"></div>
         </div>
     </section>
 
