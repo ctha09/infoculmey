@@ -3,7 +3,7 @@ let isAdmin = false;
 let currentBalance = 0;
 let financeChart = null; 
 
-// DATOS ACTUALIZADOS SEGÚN TU SOLICITUD
+// Datos corregidos según tu solicitud
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
@@ -33,7 +33,6 @@ function cargarDatosPermanentes() {
     currentBalance = 0;
     if (historyBody) historyBody.innerHTML = "";
     
-    // Preparación para la gráfica de tendencia acumulada
     let historialSaldos = [0]; 
     let etiquetas = ["Inicio"]; 
 
@@ -71,6 +70,8 @@ function inicializarGrafica(etiquetas, datos) {
     const ctx = canvas.getContext('2d');
     if (financeChart) financeChart.destroy();
 
+    const isMobile = window.innerWidth < 768;
+
     let gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
     gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
@@ -80,14 +81,15 @@ function inicializarGrafica(etiquetas, datos) {
         data: {
             labels: etiquetas,
             datasets: [{
-                label: 'Tendencia de Fondos',
+                label: 'Tendencia',
                 data: datos,
                 fill: true,
                 backgroundColor: gradient,
                 borderColor: '#3b82f6',
-                borderWidth: 3,
+                borderWidth: isMobile ? 2 : 3,
                 tension: 0.4,
-                pointRadius: 4,
+                pointRadius: isMobile ? 0 : 4,
+                pointHoverRadius: 6,
                 pointBackgroundColor: '#3b82f6'
             }]
         },
@@ -97,16 +99,28 @@ function inicializarGrafica(etiquetas, datos) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
+                    enabled: true,
                     backgroundColor: '#1e293b',
-                    callbacks: { label: (c) => 'Saldo: $' + c.raw.toLocaleString('es-AR') }
+                    displayColors: false,
+                    callbacks: {
+                        label: (c) => 'Saldo: $' + c.raw.toLocaleString('es-AR')
+                    }
                 }
             },
             scales: {
                 y: {
-                    grid: { color: 'rgba(255,255,255,0.05)' },
-                    ticks: { color: '#64748b', callback: v => '$' + (v/1000) + 'k' }
+                    grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                    ticks: { 
+                        color: '#64748b', 
+                        font: { size: 10 },
+                        callback: v => '$' + (v >= 1000 ? (v/1000) + 'k' : v) 
+                    }
                 },
-                x: { ticks: { color: '#64748b' }, grid: { display: false } }
+                x: {
+                    display: !isMobile, 
+                    grid: { display: false },
+                    ticks: { color: '#64748b', font: { size: 10 } }
+                }
             }
         }
     });
