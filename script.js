@@ -1,10 +1,13 @@
 // --- CONFIGURACIÓN DE ESTADO INICIAL ---
 let isAdmin = false;
 let currentBalance = 0;
+let financeChart = null; 
 
+// DATOS ACTUALIZADOS SEGÚN TU SOLICITUD
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
-    { desc: "Venta de pizzas", amount: 75000 }
+    { desc: "Venta de pizzas", amount: 75000 },
+    { desc: "Web", amount: -40000 }
 ];
 
 const datosInicialesPrensa = [
@@ -30,14 +33,23 @@ function cargarDatosPermanentes() {
     currentBalance = 0;
     if (historyBody) historyBody.innerHTML = "";
     
+    // Preparación para la gráfica de tendencia acumulada
+    let historialSaldos = [0]; 
+    let etiquetas = ["Inicio"]; 
+
     datosInicialesTesoreria.forEach(item => {
         currentBalance += item.amount;
+        historialSaldos.push(currentBalance);
+        etiquetas.push(item.desc);
+
         if (historyBody) {
             const row = `<tr><td>${item.desc}</td><td style="color:${item.amount >= 0 ? '#4ade80':'#f87171'}">${item.amount >= 0 ? '+' : ''}${item.amount.toLocaleString('es-AR')}</td></tr>`;
             historyBody.insertAdjacentHTML('beforeend', row);
         }
     });
+
     actualizarDisplayDinero();
+    inicializarGrafica(etiquetas, historialSaldos);
 
     if(datosInicialesPrensa.length > 0 && newsContainer) {
         newsContainer.innerHTML = "";
@@ -51,6 +63,53 @@ function cargarDatosPermanentes() {
             newsContainer.insertAdjacentHTML('beforeend', post);
         });
     }
+}
+
+function inicializarGrafica(etiquetas, datos) {
+    const canvas = document.getElementById('finance-chart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (financeChart) financeChart.destroy();
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+    gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+    financeChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: 'Tendencia de Fondos',
+                data: datos,
+                fill: true,
+                backgroundColor: gradient,
+                borderColor: '#3b82f6',
+                borderWidth: 3,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#3b82f6'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    callbacks: { label: (c) => 'Saldo: $' + c.raw.toLocaleString('es-AR') }
+                }
+            },
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#64748b', callback: v => '$' + (v/1000) + 'k' }
+                },
+                x: { ticks: { color: '#64748b' }, grid: { display: false } }
+            }
+        }
+    });
 }
 
 function actualizarDisplayDinero() {
@@ -86,6 +145,7 @@ function actualizarInterfaz() {
 function viewSection(section) {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('view-' + section).style.display = 'flex';
+    if (section === 'tesoreria' && financeChart) financeChart.resize();
     actualizarInterfaz();
 }
 
@@ -99,10 +159,8 @@ function addTransaction() {
     const desc = document.getElementById('trans-desc').value;
     const amount = parseFloat(document.getElementById('trans-amount').value);
     if (desc && !isNaN(amount)) {
-        currentBalance += amount;
-        actualizarDisplayDinero();
-        const row = `<tr><td>${desc}</td><td style="color:${amount >= 0 ? '#4ade80':'#f87171'}">${amount >= 0 ? '+' : ''}${amount.toLocaleString('es-AR')}</td></tr>`;
-        document.getElementById('history-body').insertAdjacentHTML('afterbegin', row);
+        datosInicialesTesoreria.push({ desc: desc, amount: amount });
+        cargarDatosPermanentes();
         document.getElementById('trans-desc').value = ""; 
         document.getElementById('trans-amount').value = "";
     }
