@@ -8,7 +8,8 @@ const datosInicialesTesoreria = [
 ];
 
 const datosInicialesPrensa = [
-    { fecha: "13/02/2026", texto: "Bienvenidos al portal oficial de INFOCULMEY." },
+    { fecha: "17/03/2026", texto: "Hoy se venderán käsestangen a las 3:45 pm (Primaria)" },
+    { fecha: "13/02/2026", texto: "Bienvenidos al portal oficial de INFOCULMEY." }
 ];
 
 window.onload = function() {
@@ -42,7 +43,11 @@ function cargarDatosPermanentes() {
         newsContainer.innerHTML = "";
         datosInicialesPrensa.forEach(noticia => {
             const id = Math.random().toString(36).substr(2, 9);
-            const post = `<div id="post-${id}" class="news-item"><button class="del-news" onclick="deleteNews('${id}')" style="display:none">Eliminar</button><small style="color:var(--primary)">${noticia.fecha}</small><p style="margin-top:10px; line-height:1.6;">${noticia.texto.replace(/\n/g, '<br>')}</p></div>`;
+            const post = `<div id="post-${id}" class="news-item" style="margin-bottom:30px; padding:20px; background:rgba(255,255,255,0.03); border-radius:15px; border-left:4px solid var(--primary);">
+                <button class="del-news" onclick="deleteNews('${id}')" style="display:none; float:right; background:#f87171; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Eliminar</button>
+                <small style="color:var(--primary); font-weight:bold;">${noticia.fecha}</small>
+                <p style="margin-top:10px; line-height:1.6;">${noticia.texto.replace(/\n/g, '<br>')}</p>
+            </div>`;
             newsContainer.insertAdjacentHTML('beforeend', post);
         });
     }
@@ -107,9 +112,12 @@ function addNews() {
     const text = document.getElementById('news-input').value;
     if (text.trim() !== "") {
         const container = document.getElementById('news-container');
-        if(container.querySelector('.empty-news')) container.innerHTML = "";
         const id = Date.now();
-        const post = `<div id="post-${id}" class="news-item"><button class="del-news" onclick="deleteNews('${id}')" style="display:${isAdmin?'block':'none'}">Eliminar</button><small style="color:var(--primary)">${new Date().toLocaleDateString()}</small><p style="margin-top:10px; line-height:1.6;">${text.replace(/\n/g, '<br>')}</p></div>`;
+        const post = `<div id="post-${id}" class="news-item" style="margin-bottom:30px; padding:20px; background:rgba(255,255,255,0.03); border-radius:15px; border-left:4px solid var(--primary);">
+            <button class="del-news" onclick="deleteNews('${id}')" style="display:${isAdmin?'block':'none'}; float:right; background:#f87171; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Eliminar</button>
+            <small style="color:var(--primary); font-weight:bold;">${new Date().toLocaleDateString()}</small>
+            <p style="margin-top:10px; line-height:1.6;">${text.replace(/\n/g, '<br>')}</p>
+        </div>`;
         container.insertAdjacentHTML('afterbegin', post);
         document.getElementById('news-input').value = "";
     }
