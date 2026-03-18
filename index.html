@@ -72,12 +72,18 @@
             </div>
 
             <div class="admin-only admin-box">
-                <input type="text" id="trans-desc" placeholder="Descripción">
-                <input type="number" id="trans-amount" placeholder="Monto">
-                <button class="btn-save" onclick="addTransaction()">Guardar</button>
+                <input type="text" id="trans-desc" placeholder="Descripción (ej: Venta de alfajores)">
+                <input type="number" id="trans-amount" placeholder="Monto (ej: 5000 o -2000)">
+                <button class="btn-save" onclick="addTransaction()">Guardar Movimiento</button>
             </div>
+
             <table>
-                <thead><tr><th>Concepto</th><th>Importe</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Importe</th>
+                    </tr>
+                </thead>
                 <tbody id="history-body"></tbody>
             </table>
         </div>
@@ -88,8 +94,8 @@
             <button class="back-link" onclick="showHome()">← Volver</button>
             <h2>Prensa</h2>
             <div class="admin-only admin-box">
-                <textarea id="news-input" placeholder="Escriba aquí..."></textarea>
-                <button class="btn-save" onclick="addNews()">Publicar</button>
+                <textarea id="news-input" placeholder="Escribe la noticia aquí..."></textarea>
+                <button class="btn-save" onclick="addNews()">Publicar Noticia</button>
             </div>
             <div id="news-container"></div>
         </div>
