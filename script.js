@@ -3,11 +3,12 @@ let isAdmin = false;
 let currentBalance = 0;
 let financeChart = null; 
 
-// Datos corregidos según tu solicitud
+// Datos iniciales incluyendo la venta solicitada
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
-    { desc: "Web", amount: -40000 }
+    { desc: "Web", amount: -40000 },
+    { desc: "Venta de käsestangen", amount: 29500 } // Agregado aquí
 ];
 
 const datosInicialesPrensa = [
@@ -81,7 +82,7 @@ function inicializarGrafica(etiquetas, datos) {
         data: {
             labels: etiquetas,
             datasets: [{
-                label: 'Tendencia',
+                label: 'Saldo Acumulado',
                 data: datos,
                 fill: true,
                 backgroundColor: gradient,
@@ -89,38 +90,16 @@ function inicializarGrafica(etiquetas, datos) {
                 borderWidth: isMobile ? 2 : 3,
                 tension: 0.4,
                 pointRadius: isMobile ? 0 : 4,
-                pointHoverRadius: 6,
                 pointBackgroundColor: '#3b82f6'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    enabled: true,
-                    backgroundColor: '#1e293b',
-                    displayColors: false,
-                    callbacks: {
-                        label: (c) => 'Saldo: $' + c.raw.toLocaleString('es-AR')
-                    }
-                }
-            },
+            plugins: { legend: { display: false } },
             scales: {
-                y: {
-                    grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-                    ticks: { 
-                        color: '#64748b', 
-                        font: { size: 10 },
-                        callback: v => '$' + (v >= 1000 ? (v/1000) + 'k' : v) 
-                    }
-                },
-                x: {
-                    display: !isMobile, 
-                    grid: { display: false },
-                    ticks: { color: '#64748b', font: { size: 10 } }
-                }
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
+                x: { display: !isMobile, ticks: { color: '#64748b' } }
             }
         }
     });
