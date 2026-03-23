@@ -3,12 +3,13 @@ let isAdmin = false;
 let currentBalance = 0;
 let financeChart = null; 
 
-// Datos iniciales incluyendo la venta solicitada
+// Base de datos inicial
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
     { desc: "Web", amount: -40000 },
-    { desc: "Venta de käsestangen", amount: 29500 } // Agregado aquí
+    { desc: "Venta de käsestangen", amount: 29500 },
+    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 }
 ];
 
 const datosInicialesPrensa = [
