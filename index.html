@@ -2,104 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INFOCULMEY | Promo 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Infoculmey - Promo 2026</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-content">
-            <h1 class="loader-title">INFOCULMEY</h1>
-            <p class="loader-subtitle">Una web de la Promo 2026</p>
-            <div class="progress-container">
-                <div id="progress-bar" class="progress-bar"></div>
-            </div>
-            <div class="loader-footer">Programado por Carlos Thomas Acosta</div>
-        </div>
-    </div>
-
-    <div class="bg-gradient"></div>
-
     <header>
-        <div class="credits-left">Programada por: <br> Carlos Th. Acosta</div>
-        <h1 class="main-title" onclick="showHome()">INFOCULMEY</h1>
-        <div class="credits-right">Idea por: <br> Rodolfo G. Horrisberger</div>
-        <div class="admin-access">
-            <span id="status-mode">Modo Lectura</span>
-            <button id="admin-btn" onclick="toggleAdmin()">🔑 Acceso</button>
+        <div class="glass-panel">
+            <h1>INFOCULMEY</h1>
+            <p>Promo 2026</p>
         </div>
     </header>
 
-    <main id="home-screen" class="container">
-        <div class="card-option" onclick="viewSection('tesoreria')">
-            <div class="card-content">
-                <h2>TESORERÍA</h2>
-                <p>Balances y movimientos financieros.</p>
-                <span>Ingresar →</span>
-            </div>
-        </div>
+    <main id="app-container">
+        <section id="stats" class="glass-panel">
+            <canvas id="financeChart"></canvas>
+        </section>
 
-        <div class="card-option" onclick="viewSection('prensa')">
-            <div class="card-content">
-                <h2>PRENSA</h2>
-                <p>Boletín informativo oficial.</p>
-                <span>Leer más →</span>
-            </div>
-        </div>
-
-        <a href="https://www.instagram.com/alumnadoicc" target="_blank" class="card-option card-instagram">
-            <div class="card-content">
-                <h2>ALUMNADO ICC</h2>
-                <p>Nuestra comunidad en Instagram.</p>
-                <span>Ver perfil →</span>
-            </div>
-        </a>
+        <section id="data-list" class="glass-panel">
+            <ul id="items-container">
+                </ul>
+        </section>
     </main>
 
-    <section id="view-tesoreria" class="detail-view" style="display:none">
-        <div class="glass-panel">
-            <button class="back-link" onclick="showHome()">← Volver</button>
-            <h2>Tesorería</h2>
-            <div class="balance-display">
-                <small>BALANCE ACTUAL</small>
-                <p id="money-display">$0,00</p>
-            </div>
-
-            <div class="chart-container">
-                <canvas id="finance-chart"></canvas>
-            </div>
-
-            <div class="admin-only admin-box">
-                <input type="text" id="trans-desc" placeholder="Descripción (ej: Venta de alfajores)">
-                <input type="number" id="trans-amount" placeholder="Monto (ej: 5000 o -2000)">
-                <button class="btn-save" onclick="addTransaction()">Guardar Movimiento</button>
-            </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Importe</th>
-                    </tr>
-                </thead>
-                <tbody id="history-body"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="view-prensa" class="detail-view" style="display:none">
-        <div class="glass-panel">
-            <button class="back-link" onclick="showHome()">← Volver</button>
-            <h2>Prensa</h2>
-            <div class="admin-only admin-box">
-                <textarea id="news-input" placeholder="Escribe la noticia aquí..."></textarea>
-                <button class="btn-save" onclick="addNews()">Publicar Noticia</button>
-            </div>
-            <div id="news-container"></div>
-        </div>
-    </section>
+    <button id="theme-toggle" class="fab">🌓</button>
 
     <script src="script.js"></script>
 </body>
