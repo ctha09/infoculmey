@@ -6,9 +6,10 @@ let deferredPrompt;
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
-    { desc: "Venta de käsestangen", amount: 29500 },
     { desc: "Gastos Web", amount: -40000 },
-    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 }
+    { desc: "Venta de käsestangen", amount: 29500 },
+    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 },
+    { desc: "Venta de käsestangen", amount: 27000 },
 ];
 
 const datosInicialesPrensa = [
