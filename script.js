@@ -1,9 +1,8 @@
-// --- VARIABLES DE ESTADO ---
-let isAdmin = false;
 let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
+// Datos que manejas manualmente desde el código
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
@@ -53,9 +52,9 @@ function cargarDatosPermanentes() {
     if(newsContainer) {
         newsContainer.innerHTML = "";
         datosInicialesPrensa.slice().reverse().forEach(noticia => {
-            const post = `<div class="news-item" style="margin-bottom:20px; padding:15px; background:rgba(255,255,255,0.03); border-radius:15px; border-left:4px solid #3b82f6;">
+            const post = `<div class="news-item" style="margin-bottom:20px; padding:20px; background:rgba(255,255,255,0.03); border-radius:15px; border-left:4px solid #3b82f6;">
                 <small style="color:#3b82f6; font-weight:bold;">${noticia.fecha}</small>
-                <p style="margin-top:10px;">${noticia.texto}</p>
+                <p style="margin-top:10px; line-height:1.6;">${noticia.texto}</p>
             </div>`;
             newsContainer.insertAdjacentHTML('beforeend', post);
         });
@@ -76,10 +75,19 @@ function inicializarGrafica(etiquetas, datos) {
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
                 borderColor: '#3b82f6',
                 tension: 0.4,
-                pointRadius: 2
+                pointRadius: 3,
+                pointBackgroundColor: '#3b82f6'
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
+                x: { grid: { display: false }, ticks: { color: '#64748b' } }
+            }
+        }
     });
 }
 
@@ -91,6 +99,7 @@ function actualizarDisplayDinero() {
 function viewSection(section) {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('view-' + section).style.display = 'flex';
+    window.scrollTo(0,0);
 }
 
 function showHome() {
@@ -99,16 +108,7 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-function toggleAdmin() {
-    const pass = prompt("PIN:");
-    if (pass === "031223") {
-        isAdmin = !isAdmin;
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? "block" : "none");
-        // Se eliminó la línea que actualizaba el texto de "Modo Lectura"
-        alert(isAdmin ? "Modo Edición Activado" : "Modo Lectura Restaurado");
-    }
-}
-
+// PWA Logic
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
