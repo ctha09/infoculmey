@@ -1,7 +1,7 @@
 {
   "name": "INFOCULMEY | Promo 2026",
   "short_name": "INFOCULMEY",
-  "description": "Portal oficial de la Promo 2026",
+  "description": "Portal informativo oficial de la Promo 2026",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
