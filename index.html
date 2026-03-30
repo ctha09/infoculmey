@@ -40,6 +40,12 @@
         </div>
     </header>
 
+    <div id="install-area" style="display: none; padding: 20px; text-align: center;">
+        <button id="btn-install-app" class="btn-save" style="background: #22c55e; border-radius: 50px; max-width: 300px; margin: 0 auto; box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);">
+            📥 INSTALAR APP OFICIAL
+        </button>
+    </div>
+
     <main id="home-screen" class="container">
         <div class="card-option" onclick="viewSection('tesoreria')">
             <div class="card-content">
@@ -74,21 +80,16 @@
                 <small>BALANCE ACTUAL</small>
                 <p id="money-display">$0,00</p>
             </div>
-
             <div class="chart-container">
                 <canvas id="finance-chart"></canvas>
             </div>
-
             <div class="admin-only admin-box">
                 <input type="text" id="trans-desc" placeholder="Descripción">
                 <input type="number" id="trans-amount" placeholder="Monto">
-                <button class="btn-save" onclick="addTransaction()">Guardar Movimiento</button>
+                <button class="btn-save" onclick="addTransaction()">Guardar</button>
             </div>
-
             <table>
-                <thead>
-                    <tr><th>Concepto</th><th>Importe</th></tr>
-                </thead>
+                <thead><tr><th>Concepto</th><th>Importe</th></tr></thead>
                 <tbody id="history-body"></tbody>
             </table>
         </div>
@@ -99,8 +100,8 @@
             <button class="back-link" onclick="showHome()">← Volver</button>
             <h2>Prensa</h2>
             <div class="admin-only admin-box">
-                <textarea id="news-input" placeholder="Escribe la noticia aquí..."></textarea>
-                <button class="btn-save" onclick="addNews()">Publicar Noticia</button>
+                <textarea id="news-input" placeholder="Noticia..."></textarea>
+                <button class="btn-save" onclick="addNews()">Publicar</button>
             </div>
             <div id="news-container"></div>
         </div>
