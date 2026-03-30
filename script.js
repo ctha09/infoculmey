@@ -16,7 +16,6 @@ const datosInicialesPrensa = [
     { fecha: "13/02/2026", texto: "Bienvenidos al portal INFOCULMEY." }
 ];
 
-// --- CARGA INICIAL ---
 window.onload = () => {
     cargarDatosPermanentes();
     iniciarPantallaDeCarga();
@@ -53,7 +52,7 @@ function cargarDatosPermanentes() {
 
     if(newsContainer) {
         newsContainer.innerHTML = "";
-        datosInicialesPrensa.reverse().forEach(noticia => {
+        datosInicialesPrensa.slice().reverse().forEach(noticia => {
             const post = `<div class="news-item" style="margin-bottom:20px; padding:15px; background:rgba(255,255,255,0.03); border-radius:15px; border-left:4px solid #3b82f6;">
                 <small style="color:#3b82f6; font-weight:bold;">${noticia.fecha}</small>
                 <p style="margin-top:10px;">${noticia.texto}</p>
@@ -89,7 +88,6 @@ function actualizarDisplayDinero() {
     if (display) display.innerText = `$${currentBalance.toLocaleString('es-AR')}`;
 }
 
-// --- NAVEGACIÓN ---
 function viewSection(section) {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('view-' + section).style.display = 'flex';
@@ -106,12 +104,11 @@ function toggleAdmin() {
     if (pass === "031223") {
         isAdmin = !isAdmin;
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? "block" : "none");
-        document.getElementById('status-mode').innerText = isAdmin ? "MODO EDICIÓN" : "Modo Lectura";
-        alert(isAdmin ? "Admin Activo" : "Modo Lectura");
+        // Se eliminó la línea que actualizaba el texto de "Modo Lectura"
+        alert(isAdmin ? "Modo Edición Activado" : "Modo Lectura Restaurado");
     }
 }
 
-// --- LÓGICA DE INSTALACIÓN (APP PC Y MÓVIL) ---
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
