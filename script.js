@@ -181,3 +181,12 @@ function deleteNews(id) {
         if(el) el.remove();
     }
 }
+
+// REGISTRO DE PWA (Service Worker)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker de Infoculmey activo'))
+            .catch(err => console.log('Error de SW', err));
+    });
+}
