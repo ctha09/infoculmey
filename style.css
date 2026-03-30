@@ -1,25 +1,14 @@
 :root {
-    --primary: #3b82f6; /* El azul neón original */
+    --primary: #3b82f6;
     --dark: #0a0f1d;
     --glass: rgba(255, 255, 255, 0.05);
     --border: rgba(255, 255, 255, 0.1);
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Segoe UI', Tahoma, sans-serif; 
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { background-color: var(--dark); color: white; min-height: 100vh; overflow-x: hidden; }
 
-body { 
-    background-color: var(--dark); 
-    color: white; 
-    min-height: 100vh; 
-    overflow-x: hidden; 
-}
-
-/* --- Loader original (Se mantiene) --- */
+/* --- Loader (Original) --- */
 #loader {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background-color: #000; display: flex; flex-direction: column;
@@ -34,121 +23,50 @@ body {
 .loader-footer { margin-top: 40px; color: #334155; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; text-align: center; width: 100%; }
 .loader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-/* --- Fondo Gradiente (Se mantiene) --- */
+/* --- Fondo --- */
 .bg-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0a0f1d 100%); z-index: -1; }
 
-/* --- CORRECCIÓN DEFINITIVA: Header y Diseño de Cabecera para PC --- */
-header { 
-    height: 160px; /* Un poco más alto para dar espacio */
-    display: flex; 
-    justify-content: center; /* Centra el título principal */
-    align-items: center; 
-    position: relative; 
-    border-bottom: 1px solid var(--border); 
-    backdrop-filter: blur(15px); 
-    padding: 0 5%; 
-    max-width: 1440px; /* Para que no se estire demasiado en monitores grandes */
-    margin: 0 auto; /* Centra el header completo */
-}
-
-/* CORRECCIÓN: El Título Principal - Arreglado el letter-spacing */
-.main-title { 
-    font-size: 3rem; 
-    font-weight: 900; 
-    color: var(--primary); 
-    letter-spacing: 5px; /* RESTAURADO EL ESPACIADO ORIGINAL */
-    cursor: pointer; 
-    text-shadow: 0 0 20px rgba(59, 130, 246, 0.3); 
-    text-align: center; 
-    line-height: 1.1; /* Para evitar que las letras se junten verticalmente */
-}
-
-/* CORRECCIÓN: Los Créditos - Arreglado el posicionamiento en PC */
-.credits-left, .credits-right { 
-    position: absolute; 
-    top: 50%; /* Centra verticalmente en el header */
-    transform: translateY(-50%); /* Ajuste fino del centrado vertical */
-    font-size: 0.7rem; 
-    color: #64748b; 
-    text-transform: uppercase; 
-    letter-spacing: 1px; 
-    text-align: center; 
-    white-space: nowrap; /* Evita que el texto salte de línea */
-}
-
-.credits-left { left: 5%; } /* Alineado a la izquierda */
-
-.credits-right { 
-    right: 5%; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: flex-end; /* Alinea los créditos de Rodolfo a la derecha */
-    gap: 10px; /* Espacio con el botón de acceso */
-}
+/* --- Header (Estructura Original) --- */
+header { height: 140px; display: flex; justify-content: center; align-items: center; position: relative; border-bottom: 1px solid var(--border); backdrop-filter: blur(15px); padding: 0 5%; }
+.main-title { font-size: 3rem; font-weight: 900; color: var(--primary); letter-spacing: 5px; cursor: pointer; text-shadow: 0 0 20px rgba(59, 130, 246, 0.3); text-align: center; }
+.credits-left, .credits-right { position: absolute; top: 20px; font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+.credits-left { left: 5%; } .credits-right { right: 5%; }
 
 /* --- Admin UI --- */
-.admin-access { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    font-size: 0.8rem; 
-}
-#status-mode { color: #64748b; }
+.admin-access { position: absolute; bottom: 15px; right: 5%; display: flex; align-items: center; gap: 10px; font-size: 0.8rem; }
 #admin-btn { background: var(--glass); border: 1px solid var(--border); color: white; padding: 4px 12px; border-radius: 15px; cursor: pointer; transition: 0.3s; }
 #admin-btn:hover { background: var(--primary); box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
 .admin-box { background: rgba(255, 193, 7, 0.05); border: 1px solid #ffc107; padding: 20px; border-radius: 15px; margin-bottom: 30px; }
 .admin-only { display: none; }
 
-
-/* --- Diseño del Botón de Instalación Verde (Se mantiene) --- */
-#install-area {
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#btn-install-app {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: #22c55e; 
-    color: white;
-    border-radius: 50px; 
-    padding: 15px 30px;
-    border: none;
-    font-size: 1rem;
-    font-weight: bold;
-    max-width: 320px; 
-    margin: 0 auto; 
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
-    cursor: pointer;
-    transition: 0.3s;
-}
-#btn-install-app:hover { filter: brightness(1.1); }
-
-
-/* --- Cards & Layout (Se mantiene) --- */
+/* --- Cards & Home --- */
 .container { display: flex; flex-wrap: wrap; gap: 20px; padding: 60px 5%; justify-content: center; align-items: center; }
 .card-option { flex: 1; min-width: 280px; max-width: 450px; height: 350px; background: var(--glass); border: 1px solid var(--border); border-radius: 30px; display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; text-decoration: none; color: inherit; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .card-option:hover { transform: scale(1.05); border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
 
-/* --- Views & Glass Panel --- */
+/* --- RESTAURACIÓN: Secciones de Detalle (Tesorería/Prensa) --- */
 .detail-view { padding: 40px 5%; display: flex; justify-content: center; }
 .glass-panel { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(20px); }
+.balance-display { text-align: center; padding: 40px; background: rgba(0,0,0,0.4); border-radius: 20px; margin-bottom: 30px; border: 1px solid var(--border); }
+#money-display { font-size: clamp(2.5rem, 8vw, 4rem); color: #4ade80; font-weight: 800; }
 
-/* --- Forms & Tables --- */
+.chart-container { position: relative; width: 100%; height: 300px; margin-bottom: 30px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 20px; border: 1px solid var(--border); }
+
+/* --- RESTAURACIÓN: Tablas y Texto de Tesorería --- */
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border); font-size: 1rem; }
+th { color: #64748b; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+
+/* Inputs y Botones */
 input, textarea { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 12px; width: 100%; margin-bottom: 12px; border-radius: 8px; font-size: 1rem; }
 .btn-save { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
-.btn-save:hover { filter: brightness(1.2); }
-.back-link { background: none; border: none; color: var(--primary); cursor: pointer; margin-bottom: 20px; font-size: 1rem; font-weight: bold; }
-table { width: 100%; border-collapse: collapse; }
-th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border); }
+.back-link { background: none; border: none; color: var(--primary); cursor: pointer; margin-bottom: 20px; font-size: 1rem; font-weight: bold; text-decoration: none; }
 
-/* --- CORRECCIÓN: Diseño Responsivo (Móvil) --- */
+/* --- Responsivo --- */
 @media (max-width: 768px) {
     header { height: auto; flex-direction: column; padding: 40px 20px; }
-    .credits-left, .credits-right { position: static; transform: none; font-size: 0.65rem; width: 100%; margin-bottom: 10px; text-align: center; }
-    .main-title { font-size: 2.2rem; margin: 15px 0; letter-spacing: 3px; }
-    .credits-right { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .main-title { font-size: 2.2rem; margin: 20px 0; }
+    .credits-left, .credits-right { position: static; font-size: 0.65rem; width: 100%; margin-bottom: 10px; }
+    .admin-access { position: static; justify-content: center; width: 100%; margin-top: 10px; }
     .card-option { min-width: 100%; height: 280px; }
 }
