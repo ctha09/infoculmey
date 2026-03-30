@@ -1,12 +1,12 @@
 {
   "name": "INFOCULMEY | Promo 2026",
   "short_name": "INFOCULMEY",
-  "description": "Portal informativo oficial de la Promo 2026",
+  "description": "Portal oficial de la Promo 2026",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0f1d",
-  "theme_color": "#3b82f6",
+  "theme_color": "#0a0f1d",
   "icons": [
     {
       "src": "logo.png",
