@@ -1,5 +1,4 @@
-const CACHE_NAME = 'infoculmey-cache-v1';
-// Solo los archivos esenciales y tu logo de alta resolución
+const CACHE_NAME = 'infoculmey-v1';
 const assets = [
   './',
   './index.html',
@@ -9,7 +8,6 @@ const assets = [
   './logo.png' 
 ];
 
-// Instalación: Guarda el logo.png de 1024x1024 en el dispositivo
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
@@ -18,7 +16,6 @@ self.addEventListener('install', event => {
   );
 });
 
-// Estrategia: Cargar desde caché si no hay internet
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
