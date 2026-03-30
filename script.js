@@ -2,7 +2,7 @@ let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
-// Datos actualizados con el nuevo gasto de pilas
+// Datos actualizados: Incluye el gasto de las pilas para las calculadoras
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
@@ -20,15 +20,24 @@ const datosInicialesPrensa = [
 window.onload = () => {
     cargarDatosPermanentes();
     iniciarPantallaDeCarga();
-    detectarIos();
+    gestionarInstalacion(); // Maneja iPhone y Android
 };
 
-// Detección de iPhone para mostrar guía de instalación
-function detectarIos() {
+// --- Lógica de Instalación y Detección de iPhone ---
+function gestionarInstalacion() {
     const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
     if (isIos && !isStandalone) {
-        document.getElementById('ios-install-banner').style.display = 'block';
+        // En iPhone siempre mostramos el botón verde si no está instalada
+        const installArea = document.getElementById('install-area');
+        const installBtn = document.getElementById('btn-install-app');
+        
+        installArea.style.display = 'block';
+        installBtn.onclick = (e) => {
+            e.preventDefault();
+            document.getElementById('ios-modal').style.display = 'block';
+        };
     }
 }
 
@@ -120,7 +129,7 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-// Lógica de instalación para Android/PC
+// Lógica de instalación para Android/PC (Evento nativo)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -128,6 +137,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 document.getElementById('btn-install-app').addEventListener('click', async () => {
+    // Si no es iPhone (donde ya definimos el onclick), se ejecuta esto:
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
