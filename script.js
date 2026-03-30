@@ -2,15 +2,17 @@ let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
-// Datos que manejas manualmente desde el código
+// Datos actualizados: Se agregó la compra de pilas
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
     { desc: "Venta de käsestangen", amount: 29500 },
-    { desc: "Gastos Web", amount: -40000 }
+    { desc: "Gastos Web", amount: -40000 },
+    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 }
 ];
 
 const datosInicialesPrensa = [
+    { fecha: "30/03/2026", texto: "Actualización de tesorería: Compra de insumos para calculadoras." },
     { fecha: "17/03/2026", texto: "Venta de käsestangen a las 3:45 pm" },
     { fecha: "13/02/2026", texto: "Bienvenidos al portal INFOCULMEY." }
 ];
@@ -75,7 +77,7 @@ function inicializarGrafica(etiquetas, datos) {
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
                 borderColor: '#3b82f6',
                 tension: 0.4,
-                pointRadius: 3,
+                pointRadius: 4,
                 pointBackgroundColor: '#3b82f6'
             }]
         },
@@ -108,7 +110,7 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-// PWA Logic
+// PWA Logic (Instalación)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
