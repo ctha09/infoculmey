@@ -2,7 +2,7 @@ let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
-// Datos actualizados: Se agregó la compra de pilas
+// Datos actualizados con el nuevo gasto de pilas
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
@@ -20,7 +20,17 @@ const datosInicialesPrensa = [
 window.onload = () => {
     cargarDatosPermanentes();
     iniciarPantallaDeCarga();
+    detectarIos();
 };
+
+// Detección de iPhone para mostrar guía de instalación
+function detectarIos() {
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    if (isIos && !isStandalone) {
+        document.getElementById('ios-install-banner').style.display = 'block';
+    }
+}
 
 function iniciarPantallaDeCarga() {
     const loader = document.getElementById('loader');
@@ -110,7 +120,7 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-// PWA Logic (Instalación)
+// Lógica de instalación para Android/PC
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
