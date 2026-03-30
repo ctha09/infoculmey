@@ -1,24 +1,16 @@
 {
-  "short_name": "Infoculmey",
-  "name": "Infoculmey Promo 2026",
+  "name": "INFOCULMEY | Promo 2026",
+  "short_name": "INFOCULMEY",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0f1d",
+  "theme_color": "#3b82f6",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "logo.png",
+      "sizes": "1024x1024",
       "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512",
       "purpose": "any"
     }
-  ],
-  "start_url": "./index.html",
-  "background_color": "#0a0f1d",
-  "display": "standalone",
-  "scope": "./",
-  "theme_color": "#3b82f6",
-  "orientation": "portrait-primary"
+  ]
 }
