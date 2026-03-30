@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" href="icon-192.png">
 
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -79,17 +80,14 @@
             </div>
 
             <div class="admin-only admin-box">
-                <input type="text" id="trans-desc" placeholder="Descripción (ej: Venta de alfajores)">
-                <input type="number" id="trans-amount" placeholder="Monto (ej: 5000 o -2000)">
+                <input type="text" id="trans-desc" placeholder="Descripción">
+                <input type="number" id="trans-amount" placeholder="Monto">
                 <button class="btn-save" onclick="addTransaction()">Guardar Movimiento</button>
             </div>
 
             <table>
                 <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Importe</th>
-                    </tr>
+                    <tr><th>Concepto</th><th>Importe</th></tr>
                 </thead>
                 <tbody id="history-body"></tbody>
             </table>
