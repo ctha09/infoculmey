@@ -1,4 +1,4 @@
-const CACHE_NAME = 'infoculmey-cache-v2'; // Cambiá esto a v3, v4, etc. cuando hagas cambios grandes
+const CACHE_NAME = 'infoculmey-cache-v1.2';
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // Fuerza la actualización inmediata
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
