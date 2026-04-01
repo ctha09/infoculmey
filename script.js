@@ -2,15 +2,19 @@ let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
+// Datos de tesorería actualizados con los nuevos ingresos
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
     { desc: "Venta de käsestangen", amount: 29500 },
     { desc: "Gastos Web", amount: -40000 },
-    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 }
+    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 },
+    { desc: "Venta de pizzetas", amount: 15000 },
+    { desc: "Venta de kasestanguen", amount: 27000 }
 ];
 
 const datosInicialesPrensa = [
+    { fecha: "31/03/2026", texto: "Nuevos ingresos por ventas de pizzetas y käsestangen registrados." },
     { fecha: "30/03/2026", texto: "Actualización de tesorería: Compra de insumos para calculadoras." },
     { fecha: "17/03/2026", texto: "Venta de käsestangen a las 3:45 pm" },
     { fecha: "13/02/2026", texto: "Bienvenidos al portal INFOCULMEY." }
@@ -121,7 +125,6 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-// Instalación en PC y Android
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -139,15 +142,13 @@ document.getElementById('btn-install-app').addEventListener('click', async () =>
     }
 });
 
-// SERVICE WORKER CON AUTO-REFRESH
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').then(reg => {
             reg.addEventListener('updatefound', () => {
                 const newWorker = reg.installing;
                 newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.worker) {
-                        // Recarga automática para aplicar cambios de inmediato
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                         window.location.reload(); 
                     }
                 });
