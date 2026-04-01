@@ -2,14 +2,12 @@ let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
-// Datos actualizados: Incluye el gasto de las pilas para las calculadoras
 const datosInicialesTesoreria = [
     { desc: "Fondo 2025", amount: 460550 },
     { desc: "Venta de pizzas", amount: 75000 },
-    { desc: "Gastos Web", amount: -40000 },
     { desc: "Venta de käsestangen", amount: 29500 },
-    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 },
-    { desc: "Venta de käsestangen", amount: 27000 },
+    { desc: "Gastos Web", amount: -40000 },
+    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 }
 ];
 
 const datosInicialesPrensa = [
@@ -21,22 +19,16 @@ const datosInicialesPrensa = [
 window.onload = () => {
     cargarDatosPermanentes();
     iniciarPantallaDeCarga();
-    gestionarInstalacion(); // Maneja iPhone y Android
+    chequearPlataforma();
 };
 
-// --- Lógica de Instalación y Detección de iPhone ---
-function gestionarInstalacion() {
+function chequearPlataforma() {
     const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
 
     if (isIos && !isStandalone) {
-        // En iPhone siempre mostramos el botón verde si no está instalada
-        const installArea = document.getElementById('install-area');
-        const installBtn = document.getElementById('btn-install-app');
-        
-        installArea.style.display = 'block';
-        installBtn.onclick = (e) => {
-            e.preventDefault();
+        document.getElementById('install-area').style.display = 'block';
+        document.getElementById('btn-install-app').onclick = () => {
             document.getElementById('ios-modal').style.display = 'block';
         };
     }
@@ -97,8 +89,7 @@ function inicializarGrafica(etiquetas, datos) {
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
                 borderColor: '#3b82f6',
                 tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#3b82f6'
+                pointRadius: 4
             }]
         },
         options: { 
@@ -130,7 +121,7 @@ function showHome() {
     document.getElementById('view-prensa').style.display = 'none';
 }
 
-// Lógica de instalación para Android/PC (Evento nativo)
+// Instalación en PC y Android
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -138,7 +129,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 document.getElementById('btn-install-app').addEventListener('click', async () => {
-    // Si no es iPhone (donde ya definimos el onclick), se ejecuta esto:
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
@@ -149,8 +139,19 @@ document.getElementById('btn-install-app').addEventListener('click', async () =>
     }
 });
 
+// SERVICE WORKER CON AUTO-REFRESH
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.worker) {
+                        // Recarga automática para aplicar cambios de inmediato
+                        window.location.reload(); 
+                    }
+                });
+            });
+        });
     });
 }
