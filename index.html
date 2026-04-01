@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>INFOCULMEY | Promo 2026</title>
     
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=1.1">
     <meta name="theme-color" content="#0a0f1d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="INFOCULMEY">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="INFOCULMEY">
-    
     <link rel="apple-touch-icon" href="logo.png">
+    
     <link rel="icon" type="image/png" href="logo.png">
-
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="style.css?v=1.1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -39,20 +42,19 @@
     </header>
 
     <div id="install-area" style="display: none; padding: 20px; text-align: center;">
-        <button id="btn-install-app" class="btn-save" style="background: #22c55e; border-radius: 50px; max-width: 300px; margin: 0 auto; box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);">
-            📥 INSTALAR APP OFICIAL
+        <button id="btn-install-app" class="btn-save" style="background: #22c55e; border-radius: 50px; max-width: 320px; margin: 0 auto; box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); font-weight: bold; cursor: pointer; border: none; padding: 15px 30px; color: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <span>📥</span> INSTALAR APLICACIÓN OFICIAL
         </button>
     </div>
 
     <div id="ios-modal" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #1e293b; border: 2px solid #3b82f6; border-radius: 25px; padding: 25px; z-index: 100000; box-shadow: 0 0 40px rgba(0,0,0,0.9); backdrop-filter: blur(10px);">
         <div style="text-align: center; color: white;">
-            <h3 style="color: #3b82f6; margin-bottom: 15px; letter-spacing: 1px;">INSTALAR EN IPHONE</h3>
-            <p style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; text-align: left; margin-bottom: 20px;">
-                Debido a las políticas de Apple, debés seguir estos pasos manualmente: <br><br>
-                1. Tocá el botón <b>Compartir</b> (el cuadrado con flecha <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/IPhone_Share_Icon.png" width="16" style="vertical-align: middle;"> ).<br>
-                2. Bajá un poco y seleccioná <br><b>"Agregar a inicio"</b> ➕.
+            <h3 style="color: #3b82f6; margin-bottom: 15px;">INSTALAR EN IPHONE</h3>
+            <p style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; text-align: left;">
+                1. Tocá el botón <b>Compartir</b> (cuadrado con flecha <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/IPhone_Share_Icon.png" width="16">).<br>
+                2. Seleccioná <b>"Agregar a inicio"</b> ➕.
             </p>
-            <button onclick="document.getElementById('ios-modal').style.display='none'" style="background: #3b82f6; color: white; border: none; padding: 12px 25px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer;">Entendido</button>
+            <button onclick="document.getElementById('ios-modal').style.display='none'" style="margin-top: 15px; background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: bold;">Entendido</button>
         </div>
     </div>
 
@@ -108,6 +110,6 @@
         </div>
     </section>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.1"></script>
 </body>
 </html>
