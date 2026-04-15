@@ -47,8 +47,8 @@
         <div style="text-align: center; color: white;">
             <h3 style="color: #3b82f6; margin-bottom: 15px;">INSTALAR EN IPHONE</h3>
             <p style="font-size: 0.9rem; line-height: 1.6; text-align: left;">
-                1. Toca <b>Compartir</b> (cuadrado con flecha).<br>
-                2. Selecciona <b>"Agregar a inicio"</b>.
+                1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha).<br>
+                2. Busca y selecciona la opción <b>"Agregar a inicio"</b>.
             </p>
             <button onclick="document.getElementById('ios-modal').style.display='none'" style="margin-top: 15px; background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 10px; width: 100%;">Cerrar</button>
         </div>
@@ -114,33 +114,33 @@
         <div class="glass-panel" style="max-width: 350px; text-align: center;">
             <button class="back-link" onclick="showHome()">← Volver</button>
             <h2 style="color: #3b82f6;">Acceso Panel</h2>
-            <input type="password" id="admin-pin" placeholder="PIN de Seguridad" style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; margin-bottom: 20px; text-align: center; font-size: 1.2rem;">
+            <input type="password" id="admin-pin" placeholder="Ingresar Contraseña" style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; margin-bottom: 20px; text-align: center; font-size: 1.2rem;">
             <button onclick="verificarPin()" class="btn-save" style="width: 100%; background: #3b82f6; border-radius: 12px; padding: 15px;">ENTRAR</button>
         </div>
     </section>
 
     <section id="view-admin-panel" class="detail-view" style="display:none">
         <div class="glass-panel" style="max-width: 600px;">
-            <button class="back-link" onclick="showHome()">← Salir</button>
-            <h2 style="color: #22c55e;">Panel de Gestión</h2>
+            <button class="back-link" onclick="showHome()">← Salir del Panel</button>
+            <h2 style="color: #22c55e;">Gestión de Datos</h2>
             
             <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(34, 197, 94, 0.2);">
-                <h3 style="margin-bottom: 10px; color: #4ade80; font-size: 1rem;">Tesorería</h3>
-                <input type="text" id="t-desc" placeholder="Descripción" style="width:100%; margin-bottom:8px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white;">
-                <input type="number" id="t-monto" placeholder="Monto (ej: 2500 o -1000)" style="width:100%; margin-bottom:12px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white;">
+                <h3 style="margin-bottom: 10px; color: #4ade80;">Tesorería</h3>
+                <input type="text" id="t-desc" placeholder="Descripción (ej: Venta de pizzas)" style="width:100%; margin-bottom:10px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white;">
+                <input type="number" id="t-monto" placeholder="Monto (ej: 2500)" style="width:100%; margin-bottom:15px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white;">
                 <button id="btn-t-save" onclick="agregarTesoreria()" style="width:100%; background: #22c55e; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;">GUARDAR MOVIMIENTO</button>
                 
-                <div id="admin-tesoreria-list" style="margin-top:20px; max-height:250px; overflow-y:auto; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">
+                <div id="admin-tesoreria-list" style="margin-top:20px; max-height:250px; overflow-y:auto; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
                     </div>
             </div>
 
             <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.2);">
-                <h3 style="margin-bottom: 10px; color: #60a5fa; font-size: 1rem;">Prensa</h3>
-                <input type="text" id="p-fecha" placeholder="Fecha (ej: 15 de Abril)" style="width:100%; margin-bottom:8px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white;">
-                <textarea id="p-texto" placeholder="Escribe la noticia..." style="width:100%; height:80px; margin-bottom:12px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white; font-family:inherit;"></textarea>
+                <h3 style="margin-bottom: 10px; color: #60a5fa;">Prensa</h3>
+                <input type="text" id="p-fecha" placeholder="Fecha (ej: 15/04/2026)" style="width:100%; margin-bottom:10px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white;">
+                <textarea id="p-texto" placeholder="Escribe la noticia aquí..." style="width:100%; height:100px; margin-bottom:15px; padding:12px; border-radius:10px; background:#0f172a; border:1px solid #1e293b; color:white; font-family:inherit;"></textarea>
                 <button id="btn-p-save" onclick="agregarPrensa()" style="width:100%; background: #3b82f6; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;">PUBLICAR NOTICIA</button>
                 
-                <div id="admin-prensa-list" style="margin-top:20px; max-height:250px; overflow-y:auto; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">
+                <div id="admin-prensa-list" style="margin-top:20px; max-height:250px; overflow-y:auto; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
                     </div>
             </div>
         </div>
