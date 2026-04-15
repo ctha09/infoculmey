@@ -1,78 +1,77 @@
+// --- CONFIGURACIÓN SUPABASE ---
+const SUPABASE_URL = 'https://tu-proyecto.supabase.co'; // La Project URL que encontrás en API Settings
+const SUPABASE_KEY = 'sb_publishable_...'; // Pegá acá la Publishable key de tu foto
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// --- VARIABLES GLOBALES ---
+const ADMIN_PIN = "031223";
 let currentBalance = 0;
 let financeChart = null;
 let deferredPrompt;
 
-// Datos de tesorería actualizados con los nuevos ingresos
-const datosInicialesTesoreria = [
-    { desc: "Fondo 2025", amount: 460550 },
-    { desc: "Venta de pizzas", amount: 75000 },
-    { desc: "Venta de käsestangen", amount: 29500 },
-    { desc: "Gastos Web", amount: -40000 },
-    { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 },
-    { desc: "Venta de pizzetas", amount: 15000 },
-    { desc: "Venta de kasestanguen", amount: 27000 },
-    { desc: "Venta de pizza", amount: 16000 },
-    { desc: "Venta de pizza", amount: 15100 },
-    { desc: "Compra de fotocopias", amount: -2500 },
-];
-
-const datosInicialesPrensa = [
-    { fecha: "31/03/2026", texto: "Nuevos ingresos por ventas de pizzetas y käsestangen registrados." },
-    { fecha: "30/03/2026", texto: "Actualización de tesorería: Compra de insumos para calculadoras." },
-    { fecha: "17/03/2026", texto: "Venta de käsestangen a las 3:45 pm" },
-    { fecha: "13/02/2026", texto: "Bienvenidos al portal INFOCULMEY." }
-];
-
+// --- INICIO DE LA APP ---
 window.onload = () => {
-    cargarDatosPermanentes();
+    fetchData(); // Carga datos desde la base de datos al iniciar
     iniciarPantallaDeCarga();
     chequearPlataforma();
 };
 
-function chequearPlataforma() {
-    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+// --- CARGA DE DATOS DESDE SUPABASE ---
+async function fetchData() {
+    // Traer datos de Tesorería (ordenados por ID para que el gráfico sea cronológico)
+    const { data: tesoreria, error: errT } = await _supabase
+        .from('tesoreria')
+        .select('*')
+        .order('id', { ascending: true });
 
-    if (isIos && !isStandalone) {
-        document.getElementById('install-area').style.display = 'block';
-        document.getElementById('btn-install-app').onclick = () => {
-            document.getElementById('ios-modal').style.display = 'block';
-        };
-    }
+    // Traer datos de Prensa (ordenados por fecha de creación, los más nuevos primero)
+    const { data: prensa, error: errP } = await _supabase
+        .from('prensa')
+        .select('*')
+        .order('creado_at', { ascending: false });
+
+    if (errT) console.error("Error cargando Tesorería:", errT.message);
+    else renderTesoreria(tesoreria);
+
+    if (errP) console.error("Error cargando Prensa:", errP.message);
+    else renderPrensa(prensa);
 }
 
-function iniciarPantallaDeCarga() {
-    const loader = document.getElementById('loader');
-    const bar = document.getElementById('progress-bar');
-    setTimeout(() => { if(bar) bar.style.width = '100%'; }, 100);
-    setTimeout(() => { if(loader) loader.classList.add('loader-hidden'); }, 3200);
-}
-
-function cargarDatosPermanentes() {
+// --- RENDERIZADO DE TESORERÍA ---
+function renderTesoreria(datos) {
     const historyBody = document.getElementById('history-body');
-    const newsContainer = document.getElementById('news-container');
     currentBalance = 0;
     if (historyBody) historyBody.innerHTML = "";
     
     let historialSaldos = [0]; 
     let etiquetas = ["Inicio"]; 
 
-    datosInicialesTesoreria.forEach(item => {
-        currentBalance += item.amount;
+    datos.forEach(item => {
+        const monto = parseFloat(item.monto);
+        currentBalance += monto;
         historialSaldos.push(currentBalance);
-        etiquetas.push(item.desc);
+        etiquetas.push(item.descripcion);
+        
         if (historyBody) {
-            const row = `<tr><td>${item.desc}</td><td style="color:${item.amount >= 0 ? '#4ade80':'#f87171'}">${item.amount >= 0 ? '+' : ''}${item.amount.toLocaleString('es-AR')}</td></tr>`;
+            const row = `<tr>
+                <td>${item.descripcion}</td>
+                <td style="color:${monto >= 0 ? '#4ade80':'#f87171'}">
+                    ${monto >= 0 ? '+' : ''}${monto.toLocaleString('es-AR')}
+                </td>
+            </tr>`;
             historyBody.insertAdjacentHTML('beforeend', row);
         }
     });
 
     actualizarDisplayDinero();
     inicializarGrafica(etiquetas, historialSaldos);
+}
 
+// --- RENDERIZADO DE PRENSA ---
+function renderPrensa(noticias) {
+    const newsContainer = document.getElementById('news-container');
     if(newsContainer) {
         newsContainer.innerHTML = "";
-        datosInicialesPrensa.slice().reverse().forEach(noticia => {
+        noticias.forEach(noticia => {
             const post = `<div class="news-item" style="margin-bottom:20px; padding:20px; background:rgba(255,255,255,0.03); border-radius:15px; border-left:4px solid #3b82f6;">
                 <small style="color:#3b82f6; font-weight:bold;">${noticia.fecha}</small>
                 <p style="margin-top:10px; line-height:1.6;">${noticia.texto}</p>
@@ -80,6 +79,87 @@ function cargarDatosPermanentes() {
             newsContainer.insertAdjacentHTML('beforeend', post);
         });
     }
+}
+
+// --- LÓGICA DE ADMINISTRACIÓN (PIN Y CARGA) ---
+function verificarPin() {
+    const pinIngresado = document.getElementById('admin-pin').value;
+    if (pinIngresado === ADMIN_PIN) {
+        viewSection('admin-panel');
+        document.getElementById('admin-pin').value = ""; 
+    } else {
+        alert("PIN Incorrecto");
+    }
+}
+
+async function agregarTesoreria() {
+    const desc = document.getElementById('t-desc').value;
+    const montoInput = document.getElementById('t-monto').value;
+
+    if (!desc || !montoInput) return alert("Completar todos los campos");
+
+    // Limpiamos el valor por si viene con un "+" manual
+    const montoLimpio = parseFloat(montoInput.replace('+', ''));
+
+    const { error } = await _supabase
+        .from('tesoreria')
+        .insert([{ descripcion: desc, monto: montoLimpio }]);
+
+    if (error) {
+        alert("Error de Supabase: " + error.message);
+        console.error(error);
+    } else {
+        alert("¡Saldo actualizado!");
+        document.getElementById('t-desc').value = "";
+        document.getElementById('t-monto').value = "";
+        fetchData(); // Recargar datos para actualizar balance y gráfico
+    }
+}
+
+async function agregarPrensa() {
+    const fecha = document.getElementById('p-fecha').value;
+    const texto = document.getElementById('p-texto').value;
+
+    if (!fecha || !texto) return alert("Completar todos los campos");
+
+    const { error } = await _supabase
+        .from('prensa')
+        .insert([{ fecha: fecha, texto: texto }]);
+
+    if (error) {
+        alert("Error al publicar noticia: " + error.message);
+    } else {
+        alert("¡Noticia publicada!");
+        document.getElementById('p-fecha').value = "";
+        document.getElementById('p-texto').value = "";
+        fetchData();
+    }
+}
+
+// --- NAVEGACIÓN Y UI ---
+function viewSection(section) {
+    const sections = ['home-screen', 'view-tesoreria', 'view-prensa', 'view-login', 'view-admin-panel'];
+    sections.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.style.display = 'none';
+    });
+    
+    const target = document.getElementById('view-' + section) || document.getElementById(section);
+    if (target) {
+        // Usamos flex para mantener el diseño centrado si es necesario
+        target.style.display = (section === 'login') ? 'flex' : 'flex';
+    }
+    
+    window.scrollTo(0,0);
+}
+
+function showHome() {
+    viewSection('home-screen');
+}
+
+function actualizarDisplayDinero() {
+    const display = document.getElementById('money-display');
+    if (display) display.innerText = `$${currentBalance.toLocaleString('es-AR')}`;
 }
 
 function inicializarGrafica(etiquetas, datos) {
@@ -96,7 +176,8 @@ function inicializarGrafica(etiquetas, datos) {
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
                 borderColor: '#3b82f6',
                 tension: 0.4,
-                pointRadius: 4
+                pointRadius: 4,
+                pointBackgroundColor: '#3b82f6'
             }]
         },
         options: { 
@@ -111,21 +192,25 @@ function inicializarGrafica(etiquetas, datos) {
     });
 }
 
-function actualizarDisplayDinero() {
-    const display = document.getElementById('money-display');
-    if (display) display.innerText = `$${currentBalance.toLocaleString('es-AR')}`;
+function iniciarPantallaDeCarga() {
+    const loader = document.getElementById('loader');
+    const bar = document.getElementById('progress-bar');
+    setTimeout(() => { if(bar) bar.style.width = '100%'; }, 100);
+    setTimeout(() => { if(loader) loader.classList.add('loader-hidden'); }, 3200);
 }
 
-function viewSection(section) {
-    document.getElementById('home-screen').style.display = 'none';
-    document.getElementById('view-' + section).style.display = 'flex';
-    window.scrollTo(0,0);
-}
+// --- LÓGICA DE INSTALACIÓN (PWA) ---
+function chequearPlataforma() {
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
 
-function showHome() {
-    document.getElementById('home-screen').style.display = 'flex';
-    document.getElementById('view-tesoreria').style.display = 'none';
-    document.getElementById('view-prensa').style.display = 'none';
+    if (isIos && !isStandalone) {
+        document.getElementById('install-area').style.display = 'block';
+        document.getElementById('btn-install-app').onclick = (e) => {
+            e.preventDefault();
+            document.getElementById('ios-modal').style.display = 'block';
+        };
+    }
 }
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -145,6 +230,7 @@ document.getElementById('btn-install-app').addEventListener('click', async () =>
     }
 });
 
+// SERVICE WORKER CON ACTUALIZACIÓN AUTOMÁTICA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').then(reg => {
@@ -152,6 +238,7 @@ if ('serviceWorker' in navigator) {
                 const newWorker = reg.installing;
                 newWorker.addEventListener('statechange', () => {
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        // Recarga cuando el nuevo SW está listo
                         window.location.reload(); 
                     }
                 });
