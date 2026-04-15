@@ -1,6 +1,6 @@
 // --- CONFIGURACIÓN SUPABASE ---
 const SUPABASE_URL = 'https://tu-proyecto.supabase.co'; // La Project URL que encontrás en API Settings
-const SUPABASE_KEY = 'sb_publishable_...'; // Pegá acá la Publishable key de tu foto
+const SUPABASE_KEY = 'sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ'; // Pegá acá la Publishable key de tu foto
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // --- VARIABLES GLOBALES ---
 const ADMIN_PIN = "031223";
