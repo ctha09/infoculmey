@@ -1,5 +1,4 @@
 // --- CONFIGURACIÓN DE CONEXIÓN ---
-// Asegúrate de reemplazar estos valores con los de tu proyecto en Supabase
 const SUPABASE_URL = 'sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2bWNqbWpiZWR3YWZ0ZWpkZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMTI4NDksImV4cCI6MjA5MTc4ODg0OX0.Hm4zcGTr04pY13yOXQx26wR_D6GW-Ry5yiSrWTy556k';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -14,32 +13,31 @@ let editIdPrensa = null;
 // --- INICIO DE LA APLICACIÓN ---
 window.onload = () => {
     iniciarPantallaDeCarga();
-    fetchData(); // Trae los datos de Supabase al cargar
+    fetchData(); 
 };
 
-// --- OBTENCIÓN DE DATOS (RESTAURACIÓN DE VISTA) ---
+// --- OBTENCIÓN DE DATOS ---
 async function fetchData() {
     try {
-        // Obtenemos los datos de la tabla tesoreria
         const { data: tesoreria, error: errT } = await _supabase
             .from('tesoreria')
             .select('*')
             .order('id', { ascending: true });
 
-        // Obtenemos los datos de la tabla prensa
         const { data: prensa, error: errP } = await _supabase
             .from('prensa')
             .select('*')
             .order('id', { ascending: false });
 
-        if (errT) console.error("Error al obtener tesorería:", errT);
-        if (errP) console.error("Error al obtener prensa:", errP);
+        if (errT) throw errT;
+        if (errP) throw errP;
 
         if (tesoreria) renderTesoreria(tesoreria);
         if (prensa) renderPrensa(prensa);
 
     } catch (e) {
-        console.error("Fallo crítico de conexión:", e);
+        console.error("Error al sincronizar con Supabase:", e);
+        // Si hay error de fetch (CORS), esto saldrá en la consola
     }
 }
 
@@ -57,13 +55,12 @@ function renderTesoreria(datos) {
     let etiquetas = ["Inicio"]; 
 
     datos.forEach(item => {
-        // Coincide con tus columnas: 'descripcion' y 'monto'
+        // Validación de nombres de columna exactos según tu DB
         const monto = parseFloat(item.monto) || 0;
         currentBalance += monto;
         historialSaldos.push(currentBalance);
         etiquetas.push(item.descripcion);
         
-        // Fila para la tabla pública
         if (historyBody) {
             const row = `<tr>
                 <td>${item.descripcion}</td>
@@ -74,7 +71,6 @@ function renderTesoreria(datos) {
             historyBody.insertAdjacentHTML('beforeend', row);
         }
 
-        // Fila para el panel de administración
         if (adminTesoreriaList) {
             const adminItem = `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(255,255,255,0.05); margin-bottom:8px; border-radius:10px;">
                 <div><span style="font-weight:bold;">${item.descripcion}</span><br><small>$${monto}</small></div>
@@ -107,27 +103,35 @@ function renderPrensa(noticias) {
                 <div><small>${noticia.fecha}</small><p style="font-size:0.8rem; margin:0;">${noticia.texto.substring(0,30)}...</p></div>
                 <div>
                     <button onclick="prepararEdicionPrensa(${noticia.id}, '${noticia.fecha}', \`${noticia.texto}\`)" style="background:#eab308; border:none; padding:5px; border-radius:5px; color:white; cursor:pointer;">✏️</button>
-                    <button onclick="borrarRegistro('prensa', ${noticia.id})" style="background:#ef4444; border:none; padding:5px; border-radius:5px; color:white; cursor:pointer;">🗑️</button>
+                    <button onclick="borrarRegistro('prensa', ${noticia.id})" style="background:#ef4444; border:none; padding:5px 10px; border-radius:5px; color:white; cursor:pointer;">🗑️</button>
                 </div></div>`;
             adminPrensaList.insertAdjacentHTML('beforeend', adminItem);
         }
     });
 }
 
-// --- ACCIONES DE GUARDADO Y EDICIÓN ---
+// --- ACCIONES ---
 async function agregarTesoreria() {
     const desc = document.getElementById('t-desc').value;
-    const monto = parseFloat(document.getElementById('t-monto').value);
-    if(!desc || isNaN(monto)) return alert("Completa los campos correctamente");
+    const montoInput = document.getElementById('t-monto').value;
+    
+    // Limpieza de símbolos por si acaso
+    const monto = parseFloat(montoInput.toString().replace('+', ''));
 
-    if(editIdTesoreria) {
-        await _supabase.from('tesoreria').update({descripcion: desc, monto: monto}).eq('id', editIdTesoreria);
-        editIdTesoreria = null;
-        document.getElementById('btn-t-save').innerText = "GUARDAR MOVIMIENTO";
-    } else {
-        await _supabase.from('tesoreria').insert([{descripcion: desc, monto: monto}]);
+    if(!desc || isNaN(monto)) return alert("Datos inválidos");
+
+    try {
+        if(editIdTesoreria) {
+            await _supabase.from('tesoreria').update({descripcion: desc, monto: monto}).eq('id', editIdTesoreria);
+            editIdTesoreria = null;
+            document.getElementById('btn-t-save').innerText = "GUARDAR MOVIMIENTO";
+        } else {
+            await _supabase.from('tesoreria').insert([{descripcion: desc, monto: monto}]);
+        }
+        limpiarYRefrescar();
+    } catch (e) {
+        alert("Error al guardar en la nube");
     }
-    limpiarYRefrescar();
 }
 
 async function agregarPrensa() {
@@ -135,20 +139,25 @@ async function agregarPrensa() {
     const texto = document.getElementById('p-texto').value;
     if(!fecha || !texto) return alert("Completa los campos");
 
-    if(editIdPrensa) {
-        await _supabase.from('prensa').update({fecha: fecha, texto: texto}).eq('id', editIdPrensa);
-        editIdPrensa = null;
-        document.getElementById('btn-p-save').innerText = "PUBLICAR NOTICIA";
-    } else {
-        await _supabase.from('prensa').insert([{fecha: fecha, texto: texto}]);
+    try {
+        if(editIdPrensa) {
+            await _supabase.from('prensa').update({fecha: fecha, texto: texto}).eq('id', editIdPrensa);
+            editIdPrensa = null;
+            document.getElementById('btn-p-save').innerText = "PUBLICAR NOTICIA";
+        } else {
+            await _supabase.from('prensa').insert([{fecha: fecha, texto: texto}]);
+        }
+        limpiarYRefrescar();
+    } catch (e) {
+        alert("Error al publicar");
     }
-    limpiarYRefrescar();
 }
 
 async function borrarRegistro(tabla, id) {
     if(!confirm("¿Eliminar permanentemente?")) return;
-    await _supabase.from(tabla).delete().eq('id', id);
-    fetchData();
+    const { error } = await _supabase.from(tabla).delete().eq('id', id);
+    if(error) alert("No se pudo borrar");
+    else fetchData();
 }
 
 function prepararEdicionTesoreria(id, desc, monto) {
@@ -156,6 +165,7 @@ function prepararEdicionTesoreria(id, desc, monto) {
     document.getElementById('t-desc').value = desc;
     document.getElementById('t-monto').value = monto;
     document.getElementById('btn-t-save').innerText = "ACTUALIZAR";
+    document.getElementById('view-admin-panel').scrollTo(0,0);
 }
 
 function prepararEdicionPrensa(id, fecha, texto) {
@@ -163,6 +173,7 @@ function prepararEdicionPrensa(id, fecha, texto) {
     document.getElementById('p-fecha').value = fecha;
     document.getElementById('p-texto').value = texto;
     document.getElementById('btn-p-save').innerText = "ACTUALIZAR";
+    document.getElementById('view-admin-panel').scrollTo(0,0);
 }
 
 function limpiarYRefrescar() {
@@ -173,9 +184,10 @@ function limpiarYRefrescar() {
     fetchData();
 }
 
-// --- NAVEGACIÓN Y UI ---
+// --- NAVEGACIÓN ---
 function verificarPin() {
-    if (document.getElementById('admin-pin').value === ADMIN_PIN) {
+    const pin = document.getElementById('admin-pin').value;
+    if (pin === ADMIN_PIN) {
         viewSection('admin-panel');
         document.getElementById('admin-pin').value = "";
     } else {
@@ -186,7 +198,7 @@ function verificarPin() {
 function viewSection(s) {
     const ids = ['home-screen', 'view-tesoreria', 'view-prensa', 'view-login', 'view-admin-panel'];
     ids.forEach(id => { 
-        const el = document.getElementById(id) || document.getElementById('view-' + id);
+        const el = document.getElementById(id);
         if(el) el.style.display = 'none'; 
     });
     const target = document.getElementById('view-' + s) || document.getElementById(s);
@@ -195,6 +207,7 @@ function viewSection(s) {
 
 function showHome() { viewSection('home-screen'); }
 
+// --- GRÁFICA ---
 function inicializarGrafica(etiquetas, datos) {
     const canvas = document.getElementById('finance-chart');
     if (!canvas) return;
