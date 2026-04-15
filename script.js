@@ -11,7 +11,7 @@ const datosInicialesTesoreria = [
     { desc: "Compra de pilas para nuevas calculadoras", amount: -48452 },
     { desc: "Venta de pizzetas", amount: 15000 },
     { desc: "Venta de kasestanguen", amount: 27000 },
-    { desc: "Venta de pizza", amount: 1600 },
+    { desc: "Venta de pizza", amount: 16000 },
     { desc: "Venta de pizza", amount: 15100 },
     { desc: "Compra de fotocopias", amount: -2500 },
 ];
