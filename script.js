@@ -4,7 +4,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- VARIABLES GLOBALES ---
-const ADMIN_PIN = "031223"; // Tu PIN actualizado
+const ADMIN_PIN = "cthainfo09"; // Tu PIN actualizado
 let currentBalance = 0;
 let financeChart = null;
 let editIdTesoreria = null;
