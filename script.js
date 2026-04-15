@@ -1,26 +1,40 @@
 // --- CONFIGURACIÓN SUPABASE ---
 const SUPABASE_URL = 'sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2bWNqbWpiZWR3YWZ0ZWpkZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMTI4NDksImV4cCI6MjA5MTc4ODg0OX0.Hm4zcGTr04pY13yOXQx26wR_D6GW-Ry5yiSrWTy556k';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Variable para la instancia de Supabase
+let _supabase;
 
 // --- VARIABLES GLOBALES ---
 const ADMIN_PIN = "cthainfo09";
 let currentBalance = 0;
 let financeChart = null;
-let deferredPrompt;
-
 let editIdTesoreria = null;
 let editIdPrensa = null;
 
 // --- INICIO DE LA APP ---
 window.onload = () => {
+    // 1. Forzar que el loader se vaya pase lo que pase tras 3 segundos
     iniciarPantallaDeCarga();
+    
+    // 2. Intentar inicializar Supabase
+    try {
+        if (typeof supabase !== 'undefined') {
+            _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            fetchData(); 
+        } else {
+            console.error("Librería Supabase no detectada");
+        }
+    } catch (e) {
+        console.error("Error al iniciar Supabase:", e);
+    }
+
     chequearPlataforma();
-    fetchData(); 
 };
 
-// --- CARGA DE DATOS ---
+// --- CARGA DE DATOS (CON SEGURIDAD) ---
 async function fetchData() {
+    if (!_supabase) return;
     try {
         const { data: tesoreria, error: errT } = await _supabase
             .from('tesoreria')
@@ -32,10 +46,10 @@ async function fetchData() {
             .select('*')
             .order('creado_at', { ascending: false });
 
-        if (!errT) renderTesoreria(tesoreria || []);
-        if (!errP) renderPrensa(prensa || []);
+        if (!errT && tesoreria) renderTesoreria(tesoreria);
+        if (!errP && prensa) renderPrensa(prensa);
     } catch (e) {
-        console.error("Error en fetchData:", e);
+        console.error("Fallo en la comunicación con la DB:", e);
     }
 }
 
@@ -52,7 +66,7 @@ function renderTesoreria(datos) {
     let etiquetas = ["Inicio"]; 
 
     datos.forEach(item => {
-        const monto = parseFloat(item.monto);
+        const monto = parseFloat(item.monto) || 0;
         currentBalance += monto;
         historialSaldos.push(currentBalance);
         etiquetas.push(item.descripcion);
@@ -207,14 +221,25 @@ function inicializarGrafica(etiquetas, datos) {
 function iniciarPantallaDeCarga() {
     const loader = document.getElementById('loader');
     const bar = document.getElementById('progress-bar');
+    
+    // Animamos la barra
     if(bar) bar.style.width = '100%';
-    setTimeout(() => { if(loader) loader.classList.add('loader-hidden'); }, 3000);
+    
+    // IMPORTANTE: Quitamos el loader sí o sí a los 3 segundos
+    setTimeout(() => { 
+        if(loader) {
+            loader.classList.add('loader-hidden');
+            console.log("Loader ocultado manualmente");
+        }
+    }, 3000);
 }
 
 function chequearPlataforma() {
     const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     if (isIos && !window.matchMedia('(display-mode: standalone)').matches) {
-        document.getElementById('install-area').style.display = 'block';
-        document.getElementById('btn-install-app').onclick = () => document.getElementById('ios-modal').style.display = 'block';
+        const instArea = document.getElementById('install-area');
+        if(instArea) instArea.style.display = 'block';
+        const btnInst = document.getElementById('btn-install-app');
+        if(btnInst) btnInst.onclick = () => document.getElementById('ios-modal').style.display = 'block';
     }
 }
