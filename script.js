@@ -1,6 +1,6 @@
 // --- CONFIGURACIÓN SUPABASE ---
-const SUPABASE_URL = 'https://tu-proyecto.supabase.co'; // La Project URL que encontrás en API Settings
-const SUPABASE_KEY = 'sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ'; // Pegá acá la Publishable key de tu foto
+const SUPABASE_URL = 'https://zvmcjmjbedwaftejdduu.supabase.co'; // La Project URL que encontrás en API Settings
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2bWNqbWpiZWR3YWZ0ZWpkZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMTI4NDksImV4cCI6MjA5MTc4ODg0OX0.Hm4zcGTr04pY13yOXQx26wR_D6GW-Ry5yiSrWTy556k'; // Pegá acá la Publishable key de tu foto
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // --- VARIABLES GLOBALES ---
 const ADMIN_PIN = "031223";
