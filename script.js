@@ -1,6 +1,6 @@
 // --- CONFIGURACIÓN SUPABASE ---
-const SUPABASE_URL = 'TU_URL_DE_SUPABASE';
-const SUPABASE_KEY = 'TU_KEY_PUBLISHABLE';
+const SUPABASE_URL = 'https://zvmcjmjbedwaftejdduu.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2bWNqbWpiZWR3YWZ0ZWpkZHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMTI4NDksImV4cCI6MjA5MTc4ODg0OX0.Hm4zcGTr04pY13yOXQx26wR_D6GW-Ry5yiSrWTy556k';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- VARIABLES GLOBALES ---
