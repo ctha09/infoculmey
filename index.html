@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>INFOCULMEY | Promo 2026</title>
     
-    <link rel="manifest" href="manifest.json?v=1.2">
+    <link rel="manifest" href="manifest.json?v=2.0">
     <meta name="theme-color" content="#0a0f1d">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="INFOCULMEY">
@@ -17,8 +17,9 @@
     
     <link rel="icon" type="image/png" href="logo.png">
     
-    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="style.css?v=2.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -29,7 +30,7 @@
             <div class="progress-container">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
-            <div class="loader-footer">Programado por Carlos Thomas Acosta</div>
+            <div class="loader-footer">Programada por Carlos Thomas Acosta</div>
         </div>
     </div>
 
@@ -110,6 +111,41 @@
         </div>
     </section>
 
-    <script src="script.js?v=1.2"></script>
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+        <button onclick="viewSection('login')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px; border-radius: 50%; width: 50px; height: 50px; backdrop-filter: blur(10px); cursor: pointer;">⚙️</button>
+    </div>
+
+    <section id="view-login" class="detail-view" style="display:none; justify-content: center; align-items: center;">
+        <div class="glass-panel" style="max-width: 350px; text-align: center;">
+            <button class="back-link" onclick="showHome()">← Volver</button>
+            <h2 style="color: #3b82f6;">Panel de Control</h2>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">Acceso solo para autorizados</p>
+            <input type="password" id="admin-pin" placeholder="Ingresar PIN" style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; margin-bottom: 20px; text-align: center; font-size: 1.2rem; letter-spacing: 5px;">
+            <button onclick="verificarPin()" class="btn-save" style="width: 100%; background: #3b82f6; border-radius: 12px; padding: 15px;">ENTRAR</button>
+        </div>
+    </section>
+
+    <section id="view-admin-panel" class="detail-view" style="display:none">
+        <div class="glass-panel">
+            <button class="back-link" onclick="showHome()">← Salir del Panel</button>
+            <h2 style="color: #22c55e;">Gestión de Datos</h2>
+            
+            <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 20px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                <h3 style="margin-bottom: 15px; font-size: 1rem; color: #4ade80;">Añadir a Tesorería</h3>
+                <input type="text" id="t-desc" placeholder="Descripción (Ej: Venta Pizzetas)" style="width:100%; margin-bottom:10px; padding:12px; border-radius:8px; background: #0f172a; border:1px solid #1e293b; color:white;">
+                <input type="number" id="t-monto" placeholder="Monto (Positivo o Negativo)" style="width:100%; margin-bottom:15px; padding:12px; border-radius:8px; background: #0f172a; border:1px solid #1e293b; color:white;">
+                <button onclick="agregarTesoreria()" style="width:100%; background: #22c55e; color:white; border:none; padding:15px; border-radius:8px; font-weight:bold; cursor:pointer;">GUARDAR MOVIMIENTO</button>
+            </div>
+
+            <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                <h3 style="margin-bottom: 15px; font-size: 1rem; color: #60a5fa;">Publicar en Prensa</h3>
+                <input type="text" id="p-fecha" placeholder="Fecha (Ej: 15/04/2026)" style="width:100%; margin-bottom:10px; padding:12px; border-radius:8px; background: #0f172a; border:1px solid #1e293b; color:white;">
+                <textarea id="p-texto" placeholder="Escribe la noticia aquí..." style="width:100%; height:100px; margin-bottom:15px; padding:12px; border-radius:8px; background: #0f172a; border:1px solid #1e293b; color:white; font-family: inherit;"></textarea>
+                <button onclick="agregarPrensa()" style="width:100%; background: #3b82f6; color:white; border:none; padding:15px; border-radius:8px; font-weight:bold; cursor:pointer;">PUBLICAR NOTICIA</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js?v=2.0"></script>
 </body>
 </html>
