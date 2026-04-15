@@ -4,7 +4,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- VARIABLES GLOBALES ---
-const ADMIN_PIN = "cthainfo09"; 
+const ADMIN_PIN = "cthainfo09"; // Tu PIN actualizado
 let currentBalance = 0;
 let financeChart = null;
 let editIdTesoreria = null;
@@ -16,7 +16,27 @@ window.onload = () => {
     fetchData(); 
 };
 
-// --- OBTENCIÓN DE DATOS ---
+// --- CINEMÁTICA DE LA BARRA DE CARGA ---
+function iniciarPantallaDeCarga() {
+    const bar = document.getElementById('progress-bar');
+    
+    // Iniciamos el movimiento visual de la barra
+    if (bar) {
+        setTimeout(() => {
+            bar.style.width = '100%';
+        }, 100);
+    }
+
+    // Esperamos a que la barra complete su recorrido (2s en CSS) para ocultar el loader
+    setTimeout(() => {
+        const loader = document.getElementById('loader');
+        if(loader) {
+            loader.classList.add('loader-hidden');
+        }
+    }, 2100); 
+}
+
+// --- OBTENCIÓN DE DATOS (RESTAURACIÓN DE VISTA) ---
 async function fetchData() {
     try {
         const { data: tesoreria, error: errT } = await _supabase
@@ -108,7 +128,7 @@ function renderPrensa(noticias) {
     });
 }
 
-// --- ACCIONES ---
+// --- ACCIONES DE GUARDADO ---
 async function agregarTesoreria() {
     const desc = document.getElementById('t-desc').value;
     const monto = parseFloat(document.getElementById('t-monto').value);
@@ -123,7 +143,7 @@ async function agregarTesoreria() {
             await _supabase.from('tesoreria').insert([{descripcion: desc, monto: monto}]);
         }
         limpiarYRefrescar();
-    } catch (e) { alert("Error al guardar"); }
+    } catch (e) { alert("Error al guardar en Supabase"); }
 }
 
 async function agregarPrensa() {
@@ -144,7 +164,7 @@ async function agregarPrensa() {
 }
 
 async function borrarRegistro(tabla, id) {
-    if(!confirm("¿Eliminar?")) return;
+    if(!confirm("¿Eliminar permanentemente?")) return;
     await _supabase.from(tabla).delete().eq('id', id);
     fetchData();
 }
@@ -169,7 +189,7 @@ function limpiarYRefrescar() {
     fetchData();
 }
 
-// --- NAVEGACIÓN CORREGIDA ---
+// --- NAVEGACIÓN ---
 function verificarPin() {
     if (document.getElementById('admin-pin').value === ADMIN_PIN) {
         viewSection('admin-panel');
@@ -178,16 +198,12 @@ function verificarPin() {
 }
 
 function viewSection(s) {
-    // Lista de todos los IDs de secciones posibles
     const sections = ['home-screen', 'view-tesoreria', 'view-prensa', 'view-login', 'view-admin-panel'];
-    
-    // Ocultamos todas
     sections.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
 
-    // Mostramos la elegida (buscando con o sin prefijo 'view-')
     let targetId = s.startsWith('view-') ? s : 'view-' + s;
     let target = document.getElementById(targetId) || document.getElementById(s);
     
@@ -197,9 +213,7 @@ function viewSection(s) {
     }
 }
 
-function showHome() {
-    viewSection('home-screen');
-}
+function showHome() { viewSection('home-screen'); }
 
 // --- GRÁFICA ---
 function inicializarGrafica(etiquetas, datos) {
@@ -220,11 +234,4 @@ function inicializarGrafica(etiquetas, datos) {
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
     });
-}
-
-function iniciarPantallaDeCarga() {
-    setTimeout(() => {
-        const loader = document.getElementById('loader');
-        if(loader) loader.classList.add('loader-hidden');
-    }, 2000);
 }
